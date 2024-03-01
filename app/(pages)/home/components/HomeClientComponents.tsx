@@ -2,6 +2,7 @@
 
 import { RobotButton } from "@/app/components/ui/buttons/robotButton/robotButton";
 import clsx from "clsx";
+import { motion } from "framer-motion";
 import { useState } from "react";
 
 export function HomeClientComponents() {
@@ -21,18 +22,27 @@ export function HomeClientComponents() {
 
   return (
     <div className="overflow-hidden">
-      <h1 className="text-3xl text-center mt-3">Browser Games</h1>
+      <h1 className="text-3xl absolute w-fit left-0 right-0 mx-auto text-center mt-3">
+        Browser Games
+      </h1>
 
-      <div
+      <motion.div
         onTransitionEnd={() => {
-          setStartLeftButtonBreakDown(true);
-          setStartRightButtonBreakDown(true);
+          if (openGeorgianGames) {
+            setStartLeftButtonBreakDown(true);
+          }
+          if (openInternationalGames) {
+            setStartRightButtonBreakDown(true);
+          }
         }}
-        className={clsx(
-          "relative h-[85vh] transition-all duration-[0.7s] w-screen ",
-          openGeorgianGames && "ml-[55vw]",
-          openInternationalGames && "ml-[-55vw]"
-        )}
+        style={{
+          x: openGeorgianGames
+            ? "49.8vw"
+            : openInternationalGames
+            ? "-49.8vw"
+            : 0,
+        }}
+        className="relative transition-all duration-[0.7s] w-screen h-screen "
       >
         {/* Georgian Games Button */}
         <RobotButton
@@ -54,8 +64,16 @@ export function HomeClientComponents() {
           onClick={() => clickButton("right")}
         />
 
-        <div className="w-2 h-[50%] bg-black absolute m-auto left-0 right-0 top-0 bottom-0"></div>
-      </div>
+        <motion.div
+          style={{
+            height:
+              startLeftButtonBreakDown || startRightButtonBreakDown
+                ? "100vh"
+                : "40vh",
+          }}
+          className="w-[0.4vw] transition-all duration-[0.7s] bg-black absolute m-auto left-0 right-0 top-0 bottom-0 "
+        ></motion.div>
+      </motion.div>
     </div>
   );
 }
